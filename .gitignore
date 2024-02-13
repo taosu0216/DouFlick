@@ -1,0 +1,15 @@
+# Ignore Go module files
+go.mod
+go.sum
+server/*/bin/*
+# Ignore IntelliJ IDEA project files
+.idea/
+*.log
+# server/**/*.yaml
+# server/**/*.yml
+*.yaml
+*.sum
+**/*.work
+go.work
+go.work.sum
+

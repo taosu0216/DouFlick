@@ -1,0 +1,36 @@
+syntax = "proto3";
+option go_package = "../pb;pb";
+import "common.proto";
+
+service FavoriteService {
+  rpc FavoriteAction(FavoriteActionRequest) returns (FavoriteActionResponse);
+  rpc GetFavoriteList(GetFavoriteListRequest) returns (GetFavoriteListResponse);
+  rpc IsFavoriteDict(IsFavoriteDictRequest) returns (IsFavoriteDictResponse);
+}
+
+message FavoriteActionRequest {
+  int64 user_id = 1;
+  int64 video_id = 2;
+  int64 action_type = 3;
+}
+message FavoriteActionResponse {
+  CommonResponse common_rsp = 1;
+}
+
+message GetFavoriteListRequest {
+  int64 user_id = 1;
+}
+message GetFavoriteListResponse {
+  repeated int64 video_id_list = 1;
+}
+
+message FavoriteUint{
+  int64 video_id = 1;
+  int64 user_id = 2;
+}
+message IsFavoriteDictRequest {
+  repeated FavoriteUint favorite_uint_list = 1;
+}
+message IsFavoriteDictResponse {
+  map<string,bool> is_favorite_dict = 1;
+}

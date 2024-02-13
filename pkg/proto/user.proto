@@ -1,0 +1,140 @@
+syntax = "proto3";
+option go_package = "../pb;pb";
+import "common.proto";
+
+// protoc --proto_path=. --go_out=. ./*.proto
+// protoc --go-grpc_out=. --go_out=. user.proto
+
+service UserService{
+  rpc CheckPassWord(CheckPassWordRequest) returns (CheckPassWordResponse); //检查密码
+  rpc GetUserInfo(UserInfoRequest) returns (UserInfoResponse); //获取用户信息
+  rpc GetUserInfoList(UserInfoListRequest) returns (UserInfoListResponse); //获取用户信息列表
+  rpc Register(RegisterRequest) returns (RegisterResponse); //注册
+  rpc GetUserInfoDict(UserInfoDictRequest) returns (UserInfoDictResponse); //获取用户信息字典
+  rpc CacheChangeUserCount(CacheChangeUserCountRequest) returns (CacheChangeUserCountResponse); //修改用户数量
+  rpc CacheGetAuthor(CacheGetAuthorRequest) returns (CacheGetAuthorResponse); //获取视频的作者
+  // 数据库更新
+  // 更新我的获赞数
+  rpc UpdateMyFavouritedCount(UpdateMyFavouritedCountRequest) returns (UpdateMyFavouritedCountResponse);
+  // 更新我喜欢的视频数
+  rpc UpdateMyFavouriteCount(UpdateMyFavouriteCountRequest) returns (UpdateMyFavouriteCountResponse);
+  // 更新我的关注数
+  rpc UpdateMyFollowCount(UpdateMyFollowCountRequest) returns (UpdateMyFollowCountResponse);
+  // 更新我的粉丝数
+  rpc UpdateMyFollowerCount(UpdateMyFollowerCountRequest) returns (UpdateMyFollowerCountResponse);
+}
+
+//检查密码
+message CheckPassWordRequest{
+  string username = 1;
+  string password = 2;
+}
+message CheckPassWordResponse{
+  int64 user_id = 1;
+  string token = 2;
+}
+
+//获取用户信息
+message UserInfoRequest{
+  int64 id =1;
+}
+message UserInfoResponse{
+  UserInfo user_info = 1;
+}
+
+//获取用户信息列表
+message UserInfoListRequest{
+  repeated int64 id_list = 1;
+}
+message UserInfoListResponse{
+  repeated UserInfo user_info_list = 1;
+}
+
+//注册
+message RegisterRequest{
+  string username = 1;
+  string password = 2;
+}
+message RegisterResponse{
+  int64 user_id = 1;
+  string token = 2;
+}
+
+//获取用户信息字典
+message UserInfoDictRequest{
+  repeated int64 id_list = 1;
+}
+message UserInfoDictResponse{
+  map<int64,UserInfo> user_info_dict = 1;
+}
+
+//当用户被关注/关注别人,给别人点赞/被点赞时,需要修改用户信息
+//op:是增长或者减少的数量
+//count_type:是关注/粉丝/点赞/被点赞的不同类型
+message CacheChangeUserCountRequest{
+  int64 user_id = 1;
+  int64 op = 2;
+  string count_type = 3;
+}
+message CacheChangeUserCountResponse{
+  CommonResponse common_response = 1;
+}
+
+//获取视频的作者
+message CacheGetAuthorRequest{
+  int64 video_id = 1;
+}
+message CacheGetAuthorResponse{
+  int64 user_id = 1;
+}
+
+//数据库更新
+//更新我的获赞数
+message UpdateMyFavouritedCountRequest{
+  int64 user_id = 1;
+  int64 action_type = 2;
+}
+message UpdateMyFavouritedCountResponse{
+  CommonResponse common_response = 1;
+}
+
+//更新我喜欢的视频数
+message UpdateMyFavouriteCountRequest{
+  int64 user_id = 1;
+  int64 action_type = 2;
+}
+message UpdateMyFavouriteCountResponse{
+  CommonResponse common_response = 1;
+}
+
+//更新我的关注数
+message UpdateMyFollowCountRequest{
+  int64 user_id = 1;
+  int64 action_type = 2;
+}
+message UpdateMyFollowCountResponse{
+  CommonResponse common_response = 1;
+}
+
+//更新我的粉丝数
+message UpdateMyFollowerCountRequest{
+  int64 user_id = 1;
+  int64 action_type = 2;
+}
+message UpdateMyFollowerCountResponse{
+  CommonResponse common_response = 1;
+}
+
+//用户信息(感觉放在common中更合适)
+message UserInfo{
+  int64 id = 1;             //用户id
+  string name = 2;          //名字
+  int64 follow_count = 3;   //关注的人的数量
+  int64 follower_count = 4; //粉丝数量
+  bool is_follow = 5;       //是否关注该人,true表示已关注
+  string avatar = 6;        //头像
+  string background = 7;    //背景图
+  string signature = 8;     //个性签名
+  int64 total_favourited = 9; //被点赞总数
+  int64 favourite_count = 10; //点赞数量
+}

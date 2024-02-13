@@ -1,0 +1,54 @@
+syntax = "proto3";
+option go_package = "../pb;pb";
+import "common.proto";
+
+//关注关系方法
+message RelationActionReq {
+  int64 self_user_id = 1;
+  int64 target_user_id = 2;
+  int64 action_type = 3;
+}
+message RelationActionResp {
+  CommonResponse common_response = 1;
+}
+
+//获取我的关注列表
+message GetFollowListReq {
+  int64 user_id = 1;
+}
+message GetFollowListResp {
+  repeated int64 user_list = 1;
+}
+
+//获取我的粉丝列表
+message GetFansListReq {
+  int64 user_id = 1;
+}
+message GetFansListResp {
+  repeated int64 follower_list = 1;
+}
+
+message FollowUnit {
+  int64 self_user_id = 1;
+  int64 target_user_id = 2;
+}
+message IsFollowDictReq {
+  repeated FollowUnit follow_unit = 1;
+}
+message IsFollowDictResp {
+  map<string,bool> is_follow = 1;
+}
+
+service RelationService {
+  //执行关注或取消关注操作
+  rpc RelationAction(RelationActionReq) returns (RelationActionResp);
+
+  //获取用户关注列表
+  rpc GetFollowList(GetFollowListReq) returns (GetFollowListResp);
+
+  //获取用户粉丝列表
+  rpc GetFansList(GetFansListReq) returns (GetFansListResp);
+
+  //检查用户是否关注了特定用户
+  rpc IsFollow(IsFollowDictReq) returns (IsFollowDictResp);
+}
