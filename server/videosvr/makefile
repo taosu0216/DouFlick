@@ -1,5 +1,5 @@
 .PHONY: all
-TARGET := usersvr
+TARGET := video
 GOENV := GOOS=linux GOARCH=amd64
 all:
 	CGO_ENABLED=0 ${GOENV} go build -o ./bin/${TARGET}
