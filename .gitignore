@@ -4,7 +4,10 @@ go.sum
 server/*/bin/*
 .idea/
 *.log
+config.yaml
+*.yaml
 **/*.yaml
+server
 *.sum
 **/*.work
 go.work
