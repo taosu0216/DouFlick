@@ -9,4 +9,3 @@ server/*/bin/*
 **/*.work
 go.work
 go.work.sum
-server/usersvr/config/config.yaml
