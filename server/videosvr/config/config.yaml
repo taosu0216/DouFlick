@@ -1,0 +1,49 @@
+svr_config:
+  name: "videosvr"
+  host: "127.0.0.1"
+  port: 8004
+  relation_svr_name: "relationsvr"
+  favorite_svr_name: "favoritesvr"
+  machine_id: 1
+
+redis:
+  host: "127.0.0.1"
+  password: ""
+  db: 0
+  port: 6379
+  PoolSize: 10
+
+mysql:
+  host: "127.0.0.1"
+  port: "3306"
+  database: "douflick"
+  username: "root"
+  password: "root"
+  max_idle_conn: 10
+  max_open_conn: 100
+  max_idle_time: 30
+
+log:
+  level: "debug"
+  file_name: "video.log"
+  log_path: "../../log/videosvr/"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+
+consul:
+  host: "127.0.0.1"
+  port: 8500
+  tags:
+    - "videosvr"
+
+minio:
+  host: "127.0.0.1"
+  port: "9000"
+  access_key_id: "----------------"
+  secret_access_key: "--------------------"
+  video_buckets: video
+  pic_buckets: pic
+  video_path: "/root/douflick/video"
+  pic_path: "/root/douflick/pic"
+
