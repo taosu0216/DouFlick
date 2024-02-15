@@ -2,8 +2,8 @@ package utils
 
 import "strconv"
 
-func CommentAdd(userId, videoId int64, comment_text string) (*Comment, error) {
-	comment, err := DbCommentAdd(userId, videoId, comment_text)
+func CommentAdd(userId, videoId int64, commentText string, commentId int64) (*Comment, error) {
+	comment, err := DbCommentAdd(userId, videoId, commentId, commentText)
 	if err != nil {
 		return nil, err
 	}

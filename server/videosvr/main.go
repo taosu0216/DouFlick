@@ -1,1 +1,1 @@
-package videosvr
+package main

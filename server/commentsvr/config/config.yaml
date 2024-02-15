@@ -1,0 +1,36 @@
+svr_config:
+  name: "commentsvr"
+  host: "127.0.0.1"
+  port: "8002"
+  user_svr_name: "usersvr"
+
+mysql:
+  host: "127.0.0.1"
+  port: "3306"
+  database: "douflick"
+  username: "root"
+  password: "root"
+  max_idle_conn: 10
+  max_open_conn: 100
+  max_idle_time: 30
+
+redis:
+  host: "127.0.0.1"
+  password: "password"
+  db: 0
+  port: 6379
+  PoolSize: 10
+
+log:
+  level: "debug"
+  file_name: "comment.log"
+  log_path: "../../log/commentsvr/"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+
+consul:
+  host: "127.0.0.1"
+  port: 8500
+  tags:
+    - "commentsvr"

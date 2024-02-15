@@ -2,6 +2,11 @@ package main
 
 import (
 	"fmt"
+	uuid "github.com/satori/go.uuid"
+	"github.com/taosu0216/DouFlick/pkg/pb"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/health"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"net"
 	"os"
 	"os/signal"
@@ -13,13 +18,6 @@ import (
 	"usersvr/middleware/db"
 	"usersvr/middleware/lock"
 	"usersvr/service"
-	"usersvr/utils"
-
-	uuid "github.com/satori/go.uuid"
-	"github.com/taosu0216/DouFlick/pkg/pb"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/health"
-	"google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func init() {
@@ -34,11 +32,6 @@ func init() {
 
 	//初始化mysql
 	db.DBinit()
-	mysqldb := db.GetMySqlDB()
-	err = mysqldb.AutoMigrate(&utils.User{})
-	if err != nil {
-		panic("failed to auto migrate User table, err:" + err.Error())
-	}
 
 }
 func run() error {

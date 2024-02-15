@@ -1,0 +1,54 @@
+svr_config:
+  name: "usersvr"
+  host: "127.0.0.1"
+  port: 8000
+
+mysql:
+  host: "127.0.0.1"
+  port: "3306"
+  database: "douflick"
+  username: "root"
+  password: "root"
+  max_idle_conn: 10
+  max_open_conn: 100
+  max_idle_time: 30
+
+log:
+  level: "debug"
+  file_name: "usersvr.log"
+  log_path: "../../log/usersvr/"
+  max_size: 200
+  max_age: 30
+  max_backups: 7
+
+redis:
+  host: "127.0.0.1"
+  password: "password"
+  db: 0
+  port: 6379
+  PoolSize: 10
+
+redsync:
+  - host: "127.0.0.1"
+    password: "root"
+    port: 6379
+    expire: 4
+    pool_size: 10
+
+  - host: "127.0.0.1"
+    password: "root"
+    port: 6380
+    expire: 4
+    pool_size: 10
+
+  - host: "127.0.0.1"
+    password: "root"
+    port: 6381
+    expire: 4
+    pool_size: 10
+
+consul:
+  host: "127.0.0.1"
+  port: 8500
+  tags:
+    - "usersvr"

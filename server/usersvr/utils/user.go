@@ -12,15 +12,17 @@ func GetUserInfoByAny(u interface{}) (user User, err error) {
 	case int64:
 		user, err = CacheGetUserInfoById(u)
 		if err == nil {
-			return user, nil
+			return
 		}
 		user, err = DbGetUserByUserId(u)
+		return
 	case string:
 		user, err = DbGetUserByUserName(u)
+		return
 	default:
 		err = errors.New("nil error")
+		return
 	}
-	return user, err
 }
 
 func GetUserList(useridList []int64) ([]*User, error) {

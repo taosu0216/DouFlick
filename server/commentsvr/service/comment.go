@@ -55,7 +55,7 @@ func (CommentService) GetCommentList(ctx context.Context, req *pb.CommentListReq
 func (CommentService) CommentAction(ctx context.Context, req *pb.CommentRequest) (*pb.CommentResponse, error) {
 	if req.ActionType == 1 {
 		//增加评论
-		comment, err := utils.CommentAdd(req.UserId, req.VideoId, req.CommentText)
+		comment, err := utils.CommentAdd(req.UserId, req.VideoId, req.CommentText, req.CommentId)
 		if err != nil {
 			log.Error("CommentAdd error", err)
 			return nil, err

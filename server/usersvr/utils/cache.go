@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"errors"
 	"go.uber.org/zap"
 	"strconv"
 	"usersvr/middleware/cache"
@@ -13,11 +14,11 @@ func CacheGetUserInfoById(userId int64) (User, error) {
 	data, err := cache.GetRedisCli().HGetAll(context.Background(), userKey).Result()
 	if err != nil {
 		zap.L().Error("CacheGetUser error", zap.Error(err))
-		return User{}, err
+		return User{}, errors.New("CacheGetUser error")
 	}
 	if len(data) == 0 {
 		zap.L().Error("CacheGetUser error", zap.Error(err))
-		return User{}, err
+		return User{}, errors.New("no such user")
 	}
 
 	user := User{}

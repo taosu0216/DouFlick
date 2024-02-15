@@ -6,11 +6,12 @@ import (
 	"time"
 )
 
-func DbCommentAdd(userId, videoId int64, comment_text string) (*Comment, error) {
+func DbCommentAdd(userId, videoId, commentId int64, comment_text string) (*Comment, error) {
 	sqlDB := db.GetMySqlDB()
 
 	nowTime := time.Now()
 	comment := &Comment{
+		ID:          commentId,
 		UserId:      userId,
 		VideoId:     videoId,
 		CommentText: comment_text,
