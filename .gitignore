@@ -4,9 +4,9 @@ go.sum
 server/*/bin/*
 .idea/
 *.log
-#*.yaml
+*.yaml
 *.sum
 **/*.work
 go.work
 go.work.sum
-
+server/usersvr/config/config.yaml

@@ -1,6 +1,6 @@
 svr_config:
   name: "usersvr"
-  host: "127.0.0.1"
+  host: "test"
   port: 8000
 
 mysql:
