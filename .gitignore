@@ -7,7 +7,6 @@ server/*/bin/*
 config.yaml
 *.yaml
 **/*.yaml
-server
 *.sum
 **/*.work
 go.work

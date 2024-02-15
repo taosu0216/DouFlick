@@ -17,3 +17,5 @@ COPY --from=build /app/server/usersvr/main ./main
 COPY --from=build /app/server/usersvr/main.go ./main.go
 
 CMD ["./main"]
+
+#test
