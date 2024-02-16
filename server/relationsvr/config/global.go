@@ -15,7 +15,7 @@ var (
 )
 
 const (
-	ReqUuid          = "uuid"
+	ReqUuid          = "snowflake"
 	SessionKeyPrefix = "session_"
 	DefaultTime      = "2006-01-02 15:04:05"
 )

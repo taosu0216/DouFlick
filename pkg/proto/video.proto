@@ -46,7 +46,7 @@ message GetFavoriteVideoListReq {
 }
 
 message GetFavoriteVideoListRsp {
-  repeated VideoInfo video_list = 1; // 用户收藏的视频列表​
+  repeated VideoInfo video_list = 1; // 用户收藏的视频列表
 }
 
 
@@ -56,7 +56,7 @@ message GetPublishVideoListRequest {
 }
 
 message GetPublishVideoListResponse {
-  repeated VideoInfo video_list = 1; // 用户发布的视频列表​
+  repeated VideoInfo video_list = 1; // 用户发布的视频列表
 }
 
 message PublishVideoRequest {
@@ -81,13 +81,13 @@ message GetFeedListResponse {
 
 
 message VideoInfo {
-  int64 id = 1; // 视频唯一标识​
+  int64 id = 1; // 视频唯一标识
   int64 author_id = 2; // 视频作者信息
   string play_url = 3; // 视频播放地址
-  string cover_url = 4; // 视频封面地址​
-  int64 favorite_count = 5; // 视频的点赞总数​
-  int64 comment_count = 6; // 视频的评论总数​
-  bool is_favorite = 7; // true-已点赞，false-未点赞​
+  string cover_url = 4; // 视频封面地址
+  int64 favorite_count = 5; // 视频的点赞总数
+  int64 comment_count = 6; // 视频的评论总数
+  bool is_favorite = 7; // true-已点赞，false-未点赞
   string title = 8; //视频标题
 }
 
@@ -96,5 +96,5 @@ message GetVideoInfoListReq {
 }
 
 message GetVideoInfoListRsp {
-  repeated VideoInfo video_info_list = 2;
+  repeated VideoInfo video_info_list = 1;
 }

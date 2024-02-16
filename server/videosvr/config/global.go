@@ -15,18 +15,20 @@ var (
 )
 
 const (
-	ReqUuid          = "snowflake"
-	SessionKeyPrefix = "session_"
-	DefaultTime      = "2006-01-02 15:04:05"
+	ReqUuid           = "snowflake"
+	SessionKeyPrefix  = "session_"
+	CommentInfoPrefix = "comment_info_"
+	VideoInfoPrefix   = "video_info_"
+	DefaultTime       = "2006-01-02 15:04:05"
 )
-
-func GetRootDir() string {
-	return rootDir
-}
 
 func init() {
 	inferRootDir()
 	// 初始化配置
+}
+
+func GetRootDir() string {
+	return rootDir
 }
 
 // 推断 Root目录（copy就行）
