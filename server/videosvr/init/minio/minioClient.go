@@ -2,9 +2,11 @@ package minio
 
 import (
 	"github.com/minio/minio-go/v6"
+	"strings"
 	"sync"
 	"usersvr/log"
 	"videosvr/config"
+	"videosvr/init/snowflake"
 )
 
 type Minio struct {
@@ -85,4 +87,29 @@ func createBucket(m *minio.Client, bucketName string) {
 	log.Infof("set bucket %s success", bucketName)
 }
 
-//TODO: Upload未实现
+func (m *Minio) UploadFile(fileType, file, userID string) (string, error) {
+	var filename strings.Builder
+	var contentType, Suffix, bucket string
+	if fileType == "video" {
+		contentType = "video/mp4"
+		Suffix = ".mp4"
+		bucket = m.VideoBuckets
+	} else {
+		contentType = "image/jpeg"
+		Suffix = ".jpg"
+		bucket = m.PicBuckets
+	}
+	filename.WriteString(userID)
+	filename.WriteString("_")
+	snowFlakeID := snowflake.GenerateID()
+	filename.WriteString(snowFlakeID)
+	filename.WriteString(Suffix)
+	n, err := m.MinioClient.FPutObject(bucket, filename.String(), file, minio.PutObjectOptions{ContentType: contentType})
+	if err != nil {
+		log.Error("upload file err:%s", err.Error())
+		return "", err
+	}
+	log.Infof("upload %d bytes file success, filename:%s", n, filename.String())
+	url := "http://" + m.EndPoint + "/" + bucket + "/" + filename.String()
+	return url, nil
+}
