@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/taosu0216/DouFlick/pkg/pb"
 	"go.uber.org/zap"
 	"strconv"
 	"time"
-	"usersvr/log"
 	"videosvr/config"
 	"videosvr/init/minio"
+	"videosvr/log"
 	"videosvr/utils"
 )
 
@@ -31,6 +32,7 @@ type VideoService struct {
 
 func (VideoService) PublishVideo(ctx context.Context, req *pb.PublishVideoRequest) (*pb.PublishVideoResponse, error) {
 	minioClient := minio.GetMinio()
+	fmt.Println(111)
 	videoUrl, err := minioClient.UploadFile("video", req.SaveFile, strconv.FormatInt(req.UserId, 10))
 	if err != nil {
 		log.Error("UploadFile err:%v", err)
@@ -94,11 +96,12 @@ func (VideoService) GetVideoInfoList(ctx context.Context, req *pb.GetVideoInfoLi
 func (v VideoService) GetFavoriteVideoList(ctx context.Context, req *pb.GetFavoriteVideoListReq) (*pb.GetFavoriteVideoListRsp, error) {
 	userResp, err := utils.GetFavoriteSvrClient().GetFavoriteList(ctx, &pb.GetFavoriteListRequest{UserId: req.UserId})
 	if err != nil {
-		log.Fatalf("GetFavoriteList err:%v", err)
+		fmt.Println("####################", err)
+		log.Errorf("GetFavoriteList err:%v", err)
 	}
 	resp, err := v.GetVideoInfoList(ctx, &pb.GetVideoInfoListReq{VideoId: userResp.VideoIdList})
 	if err != nil {
-		log.Fatalf("GetVideoInfoList err:%v", err)
+		log.Errorf("GetVideoInfoList err:%v", err)
 	}
 	return &pb.GetFavoriteVideoListRsp{VideoList: resp.VideoInfoList}, nil
 }

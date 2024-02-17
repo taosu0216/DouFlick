@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	_ "github.com/mbobakov/grpc-consul-resolver"
 	"github.com/taosu0216/DouFlick/pkg/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"

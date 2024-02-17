@@ -4,9 +4,9 @@ import (
 	"github.com/minio/minio-go/v6"
 	"strings"
 	"sync"
-	"usersvr/log"
 	"videosvr/config"
 	"videosvr/init/snowflake"
+	"videosvr/log"
 )
 
 type Minio struct {
@@ -59,7 +59,7 @@ func initMinio() {
 func createBucket(m *minio.Client, bucketName string) {
 	exists, err := m.BucketExists(bucketName)
 	if err != nil {
-		panic(err)
+		log.Error("check bucket err:%s", err.Error())
 	}
 	if !exists {
 		err = m.MakeBucket(bucketName, "us-east-1")
@@ -82,7 +82,6 @@ func createBucket(m *minio.Client, bucketName string) {
 	err = m.SetBucketPolicy(bucketName, policy)
 	if err != nil {
 		log.Error("set bucket policy err:%s", err.Error())
-		panic(err)
 	}
 	log.Infof("set bucket %s success", bucketName)
 }

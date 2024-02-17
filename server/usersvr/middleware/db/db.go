@@ -6,7 +6,6 @@ import (
 	"gorm.io/gorm"
 	"sync"
 	"usersvr/config"
-	"usersvr/log"
 )
 
 var (
@@ -21,7 +20,6 @@ func initDB() {
 	dbConfig := config.GetGlobalConfig().MysqlConfig
 	connArgs := fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", dbConfig.UserName,
 		dbConfig.PassWord, dbConfig.Host, dbConfig.Port, dbConfig.Database)
-	log.Info("mdb addr:" + connArgs)
 	var err error
 	mysqldb, err = gorm.Open(mysql.Open(connArgs), &gorm.Config{})
 	if err != nil {

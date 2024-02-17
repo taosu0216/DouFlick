@@ -26,7 +26,7 @@ func GetVideosByUserId(userId int64) ([]*pb.VideoInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	resp := make([]*pb.VideoInfo, len(infos))
+	resp := make([]*pb.VideoInfo, 0)
 	for _, video := range infos {
 		resp = append(resp, &pb.VideoInfo{
 			Id:            video.Id,

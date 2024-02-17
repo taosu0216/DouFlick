@@ -1,11 +1,12 @@
 package log
 
 import (
+	"os"
+	"videosvr/config"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	lumber "gopkg.in/natefinch/lumberjack.v2"
-	"os"
-	"videosvr/config"
 )
 
 var (
