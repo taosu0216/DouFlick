@@ -61,8 +61,6 @@ type RedisConfig struct {
 	PoolSize int    `mapstructure:"pool_size"`
 	Host     string `mapstructure:"host"`
 	PassWord string `mapstructure:"password"`
-	// TODO: 这里的expired待完成用init/cache的全局变量直接搞
-	//Expired int `mapstructure:"expired"`
 }
 type ConsulConfig struct {
 	Host string   `mapstructure:"host" json:"host" yaml:"host"`
