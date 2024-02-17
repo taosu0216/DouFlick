@@ -26,7 +26,7 @@ import (
 */
 
 type VideoService struct {
-	pb.VideoServiceClient
+	pb.UnimplementedVideoServiceServer
 }
 
 func (VideoService) PublishVideo(ctx context.Context, req *pb.PublishVideoRequest) (*pb.PublishVideoResponse, error) {
