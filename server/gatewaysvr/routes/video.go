@@ -9,7 +9,7 @@ import (
 func VideoRouter(r *gin.RouterGroup) {
 	video := r.Group("publish")
 	{
-		video.POST("/action", middleWare.AuthMiddleWare(), controller.Publish)
-		video.GET("/list", middleWare.AuthWithOutMiddleware(), controller.GetVideoList)
+		video.POST("/action/", middleWare.AuthMiddleWare(), controller.Publish)
+		video.GET("/list/", middleWare.AuthMiddleWare(), controller.GetVideoList)
 	}
 }

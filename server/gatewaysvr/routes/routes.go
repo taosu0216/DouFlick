@@ -19,7 +19,6 @@ func RouteInit() *gin.Engine {
 	{
 		UserRouter(douyin)
 		CommentRouter(douyin)
-		//TODO:以下内容
 		VideoRouter(douyin)
 		FavoriteRouter(douyin)
 		RelationRouter(douyin)

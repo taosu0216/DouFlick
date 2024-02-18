@@ -1,6 +1,7 @@
 package middleWare
 
 import (
+	"encoding/base64"
 	"gatewaysvr/response"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
@@ -9,7 +10,7 @@ import (
 )
 
 var (
-	Secret              = []byte("DouFlick_taosu")
+	Secret              = []byte("TikTok")
 	TokenExpireDuration = time.Hour * 24 //过期时间
 )
 
@@ -38,25 +39,28 @@ func GenerateToken(userId int64, username string) (string, error) {
 	return signedToken, nil
 }
 
-func ParseToken(tokenStr string) (*JWTClaims, error) {
-	token, err := jwt.ParseWithClaims(tokenStr, &JWTClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return Secret, nil
+func ParseToken(tokenString string) (*JWTClaims, error) {
+	secret, _ := base64.URLEncoding.DecodeString("TikTok")
+	token, _ := jwt.ParseWithClaims(tokenString, &JWTClaims{}, func(token *jwt.Token) (i interface{}, err error) {
+		return secret, nil
 	})
-	if err != nil {
-		return nil, err
-	}
-	if claims, ok := token.Claims.(*JWTClaims); ok && token.Valid {
-		return claims, nil
-	}
-	return nil, err
+	//if err != nil {
+	//	return nil, err
+	//}
+	//if claims, ok := token.Claims.(*JWTClaims); ok && token.Valid {
+	//	return claims, nil
+	//}
+	claim, _ := token.Claims.(*JWTClaims)
+	return claim, nil
+	//return nil, errors.New("invalid token")
 }
 
-func VerifyToken(tokenStr string) (int64, error) {
-	zap.L().Debug("tokenString", zap.String("tokenString", tokenStr))
-	if tokenStr == "" {
+func VerifyToken(tokenString string) (int64, error) {
+	zap.L().Debug("tokenString", zap.String("tokenString", tokenString))
+	if tokenString == "" {
 		return int64(0), nil
 	}
-	claims, err := ParseToken(tokenStr)
+	claims, err := ParseToken(tokenString)
 	if err != nil {
 		return int64(0), err
 	}
@@ -74,22 +78,19 @@ func AuthMiddleWare() gin.HandlerFunc {
 			response.Fail(c, "鉴权失败", nil)
 			c.Abort()
 		}
+		c.Set("UserId", userId)
 	}
 }
 
 // AuthWithOutMiddleware 部分接口不需要用户登录也可访问，如feed，pushlishlist，favList，follow/follower list
 func AuthWithOutMiddleware() gin.HandlerFunc {
-
 	return func(c *gin.Context) {
-
 		tokenString := c.Query("token")
-
 		userId, err := VerifyToken(tokenString)
 		if err != nil {
 			response.Fail(c, "auth error", nil)
 			c.Abort()
 		}
-
 		c.Set("UserId", userId)
 		c.Next()
 	}

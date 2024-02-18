@@ -1,6 +1,7 @@
 package minio
 
 import (
+	"fmt"
 	"github.com/minio/minio-go/v6"
 	"strings"
 	"sync"
@@ -90,10 +91,12 @@ func (m *Minio) UploadFile(fileType, file, userID string) (string, error) {
 	var filename strings.Builder
 	var contentType, Suffix, bucket string
 	if fileType == "video" {
+		fmt.Println("upload video")
 		contentType = "video/mp4"
 		Suffix = ".mp4"
 		bucket = m.VideoBuckets
 	} else {
+		fmt.Println("upload pic")
 		contentType = "image/jpeg"
 		Suffix = ".jpg"
 		bucket = m.PicBuckets
@@ -103,6 +106,7 @@ func (m *Minio) UploadFile(fileType, file, userID string) (string, error) {
 	snowFlakeID := snowflake.GenerateID()
 	filename.WriteString(snowFlakeID)
 	filename.WriteString(Suffix)
+	fmt.Println(bucket, filename.String(), file)
 	n, err := m.MinioClient.FPutObject(bucket, filename.String(), file, minio.PutObjectOptions{ContentType: contentType})
 	if err != nil {
 		log.Error("upload file err:%s", err.Error())

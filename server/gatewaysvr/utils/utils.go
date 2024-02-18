@@ -8,6 +8,7 @@ import (
 	_ "github.com/mbobakov/grpc-consul-resolver" // It's important
 	"github.com/taosu0216/DouFlick/pkg/pb"
 	"google.golang.org/grpc"
+	"math/rand"
 	"time"
 )
 
@@ -101,4 +102,15 @@ func InitSvrConn() {
 	CommentSvrClient = NewCommentSvrClient(config.GetGlobalConfig().SvrConfig.CommentSvrName)
 	RelationSvrClient = NewRelationSvrClient(config.GetGlobalConfig().SvrConfig.RelationSvrName)
 	FavoriteSvrClient = NewFavoriteSvrClient(config.GetGlobalConfig().SvrConfig.FavoriteSvrName)
+}
+
+func RandomStr() string {
+	var letters = []byte("qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM")
+	result := make([]byte, 16)
+
+	rand.Seed(time.Now().Unix())
+	for i := range result {
+		result[i] = letters[rand.Intn(len(letters))]
+	}
+	return string(result)
 }

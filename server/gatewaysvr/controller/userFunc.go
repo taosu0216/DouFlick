@@ -11,8 +11,8 @@ import (
 )
 
 func UserLogin(ctx *gin.Context) {
-	userName := ctx.PostForm("username")
-	password := ctx.PostForm("password")
+	userName := ctx.Query("username")
+	password := ctx.Query("password")
 	if len(userName) > 32 || len(password) > 32 {
 		response.Fail(ctx, "username or password invalid", nil)
 		return
@@ -44,13 +44,13 @@ func GetUserInfo(ctx *gin.Context) {
 		response.Fail(ctx, err.Error(), nil)
 		return
 	}
-	log.Infof("get user info: %+v", resp)
+	log.Infof("get user info: %v", resp)
 	response.Success(ctx, "success", resp.UserInfo)
 }
 
 func UserRegister(ctx *gin.Context) {
-	username := ctx.PostForm("username")
-	password := ctx.PostForm("password")
+	username := ctx.Query("username")
+	password := ctx.Query("password")
 	if len(username) > 32 || len(password) > 32 {
 		response.Fail(ctx, "username or password invalid", nil)
 		return

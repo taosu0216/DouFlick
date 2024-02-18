@@ -56,6 +56,7 @@ type UserService struct {
 // CheckPassWord 检查密码
 func (UserService) CheckPassWord(ctx context.Context, req *pb.CheckPassWordRequest) (*pb.CheckPassWordResponse, error) {
 	info, err := utils.GetUserInfoByAny(req.Username)
+	fmt.Println("user ************", info)
 	if err != nil {
 		log.Error("service/CheckPassWord() GetUser error is : ", err)
 		return nil, err
