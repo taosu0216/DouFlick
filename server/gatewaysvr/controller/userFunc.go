@@ -47,3 +47,23 @@ func GetUserInfo(ctx *gin.Context) {
 	log.Infof("get user info: %+v", resp)
 	response.Success(ctx, "success", resp.UserInfo)
 }
+
+func UserRegister(ctx *gin.Context) {
+	username := ctx.PostForm("username")
+	password := ctx.PostForm("password")
+	if len(username) > 32 || len(password) > 32 {
+		response.Fail(ctx, "username or password invalid", nil)
+		return
+	}
+	log.Info(username, password)
+	resp, err := utils.GetUserSvrClient().Register(ctx, &pb.RegisterRequest{
+		Username: username,
+		Password: password,
+	})
+	if err != nil {
+		zap.L().Error("register error", zap.Error(err))
+		response.Fail(ctx, err.Error(), nil)
+		return
+	}
+	response.Success(ctx, "success", resp)
+}

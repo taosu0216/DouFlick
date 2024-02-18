@@ -3,6 +3,7 @@ package controller
 import (
 	"gatewaysvr/response"
 	"gatewaysvr/utils"
+	"go.uber.org/zap"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,13 +23,13 @@ type DouFlickAddCommentResp struct {
 }
 
 func GetCommentList(c *gin.Context) {
-	video_id, err := strconv.ParseInt(c.Query("video_id"), 10, 64)
-	//TODO: 鉴权
+	videoId, err := strconv.ParseInt(c.Query("video_id"), 10, 64)
 	if err != nil {
+		zap.L().Error("videoId error", zap.Error(err))
 		response.Fail(c, "video_id invalid", nil)
 		return
 	}
-	request := &pb.CommentListRequest{VideoId: video_id}
+	request := &pb.CommentListRequest{VideoId: videoId}
 	resp, err := utils.GetCommentSvrClient().GetCommentList(c, request)
 	if err != nil {
 		response.Fail(c, err.Error(), nil)
@@ -40,37 +41,46 @@ func GetCommentList(c *gin.Context) {
 }
 
 func AddComment(c *gin.Context) {
-	video_id, err := strconv.ParseInt(c.PostForm("video_id"), 10, 64)
-	user_id, err := strconv.ParseInt(c.PostForm("user_id"), 10, 64)
+
+	tokenUids, _ := c.Get("UserId")
+
+	tokenUid := tokenUids.(int64)
+
+	videoId, err := strconv.ParseInt(c.PostForm("video_id"), 10, 64)
 	comment := c.PostForm("comment_text")
 	actionTypeStr := c.PostForm("action_type")
-	comment_id := c.PostForm("comment_id")
-	commentId := int64(0)
-	if actionTypeStr == "2" {
-		commentId, err = strconv.ParseInt(comment_id, 10, 64)
-		if err != nil {
-			response.Fail(c, "comment_id invalid", nil)
-		}
+	commentID := c.PostForm("comment_id")
+
+	commentId, err := strconv.ParseInt(commentID, 10, 64)
+	if err != nil {
+		response.Fail(c, "comment_id invalid", nil)
+		return
 	}
-	actionType, err := strconv.ParseInt(actionTypeStr, 10, 32)
+
+	actionType, err := strconv.ParseInt(actionTypeStr, 10, 64)
 	if err != nil {
 		response.Fail(c, "action_type invalid", nil)
 		return
 	}
 	resq := &pb.CommentRequest{
-		VideoId:     video_id,
-		UserId:      user_id,
+		VideoId:     videoId,
+		UserId:      tokenUid,
 		CommentText: comment,
 		ActionType:  actionType,
 		CommentId:   commentId,
 	}
+
+	//发布评论
 	resp, err := utils.GetCommentSvrClient().CommentAction(c, resq)
 	if err != nil {
 		response.Fail(c, err.Error(), nil)
 		return
 	}
+
+	//视频评论+1
+	_, err = utils.GetVideoSvrClient().UpdateCommentCount(c, &pb.UpdateCommentCountReq{VideoId: videoId, ActionType: actionType})
 	// TODO: video模块未完成
-	userinfo, err := utils.GetUserSvrClient().GetUserInfo(c, &pb.UserInfoRequest{Id: user_id})
+	userinfo, err := utils.GetUserSvrClient().GetUserInfo(c, &pb.UserInfoRequest{Id: tokenUid})
 	if err != nil {
 		response.Fail(c, err.Error(), nil)
 		return

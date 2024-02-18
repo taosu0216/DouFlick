@@ -69,7 +69,7 @@ func Run() error {
 	log.Info("Init Consul Register success")
 
 	// 启动
-	log.Infof("TikTokLite.video_svr listening on %s:%d", config.GetGlobalConfig().SvrConfig.Host, config.GetGlobalConfig().SvrConfig.Port)
+	log.Infof("DouFlick.video_svr listening on %s:%d", config.GetGlobalConfig().SvrConfig.Host, config.GetGlobalConfig().SvrConfig.Port)
 	go func() {
 		err = server.Serve(listen)
 		if err != nil {

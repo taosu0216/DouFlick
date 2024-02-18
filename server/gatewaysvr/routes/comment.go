@@ -2,14 +2,15 @@ package routes
 
 import (
 	"gatewaysvr/controller"
+	"gatewaysvr/utils/middleWare"
 
 	"github.com/gin-gonic/gin"
 )
 
-func CommentRoute(r *gin.RouterGroup) {
+func CommentRouter(r *gin.RouterGroup) {
 	comment := r.Group("comment")
 	{
-		comment.GET("/list", controller.GetCommentList)
-		comment.POST("/action", controller.AddComment)
+		comment.GET("/list", middleWare.AuthWithOutMiddleware(), controller.GetCommentList)
+		comment.POST("/action", middleWare.AuthMiddleWare(), controller.AddComment)
 	}
 }

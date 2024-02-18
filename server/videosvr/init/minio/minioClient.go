@@ -19,11 +19,11 @@ type Minio struct {
 
 var (
 	Client    Minio
-	MinioOnce sync.Once
+	OnceMinio sync.Once
 )
 
 func GetMinio() Minio {
-	MinioOnce.Do(func() {
+	OnceMinio.Do(func() {
 		initMinio()
 	})
 	return Client
